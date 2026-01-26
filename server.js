@@ -1,0 +1,108 @@
+require('dotenv').config();
+
+const express = require('express');
+const mysql = require('mysql2');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const path = require('path');
+
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+
+app.use(express.static(__dirname)); 
+
+// 1. ตั้งค่าการเชื่อมต่อ Database ใข้ dotenv เพื่อดึงค่าจาก .env กันรหัสผ่านหลุด
+const db = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
+});
+
+db.connect((err) => {
+    if (err) {
+        console.error('❌ เชื่อมต่อ Database ไม่สำเร็จ:', err);
+        return;
+    }
+    console.log('✅ เชื่อมต่อ MySQL สำเร็จแล้ว!');
+});
+
+// 2. API สมัครสมาชิก
+app.post('/api/signup', (req, res) => {
+    const { first_name, last_name, email, password } = req.body;
+    if (!email || !password || !first_name || !last_name) {
+        return res.status(400).send('กรุณากรอกข้อมูลให้ครบ');
+    }
+    const sql = 'INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)';
+    db.query(sql, [first_name, last_name, email, password], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Error Registering');
+        } else {
+            res.status(200).send('User registered');
+        }
+    });
+});
+
+// 3. API เข้าสู่ระบบ
+app.post('/api/login', (req, res) => {
+    const { email, password } = req.body;
+    const sql = 'SELECT * FROM users WHERE email = ? AND password = ?';
+    db.query(sql, [email, password], (err, results) => {
+        if (err) {
+            res.status(500).send('Database Error');
+        } else if (results.length > 0) {
+            res.status(200).json({ message: 'Login successful', user: results[0] });
+        } else {
+            res.status(401).send('Incorrect email or password');
+        }
+    });
+});
+
+// 4. API รับเรื่องแจ้งซ่อม (Add Request)
+app.post('/api/requests', (req, res) => {
+    // รับค่าที่ส่งมาจากหน้าเว็บ
+    const { user_id, problem_title, building, detail } = req.body;
+
+    // เช็คข้อมูลเบื้องต้น
+    if (!user_id || !problem_title || !building) {
+        return res.status(400).send('ข้อมูลไม่ครบถ้วน');
+    }
+
+    // เตรียมคำสั่ง SQL (สังเกตว่าเราต้องใส่ user_id ด้วย เพื่อให้รู้ว่าใครแจ้ง)
+    const sql = `
+        INSERT INTO requests (user_id, problem_title, building, detail, status) 
+        VALUES (?, ?, ?, ?, 'received')
+    `;
+
+    db.query(sql, [user_id, problem_title, building, detail], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('บันทึกข้อมูลไม่สำเร็จ');
+        } else {
+            res.status(200).send('บันทึกข้อมูลเรียบร้อย');
+        }
+    });
+});
+
+// 5. API ดึงรายการแจ้งซ่อมทั้งหมด (Get All Requests)
+app.get('/api/requests', (req, res) => {
+    // ดึงข้อมูลจากตาราง requests เรียงจากใหม่ไปเก่า
+    const sql = 'SELECT * FROM requests ORDER BY created_at DESC';
+    
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Database Error');
+        } else {
+            // ส่งข้อมูลกลับไปเป็น JSON
+            res.json(results);
+        }
+    });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`🚀 เปิดเว็บได้เลยที่ -> http://localhost:${PORT}`);
+});
