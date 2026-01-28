@@ -29,12 +29,16 @@ const upload = multer({ storage: storage });
 
 //ตั้งค่าอีเมล (Nodemailer)
 const transporter = nodemailer.createTransport({
-    host: 'smtp-relay.brevo.com',  // เปลี่ยนเป็นของ Brevo
-    port: 587,
+    host: 'smtp-relay.brevo.com',  // 👈 ต้องเป็นอันนี้
+    port: 587,                     // 👈 ต้องเป็น 587
     secure: false,
     auth: {
-        user: process.env.EMAIL_USER, // อีเมล Login ของ Brevo
-        pass: process.env.EMAIL_PASS  // รหัส SMTP Key ยาวๆ
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    },
+    // แถมตัวนี้ไว้กัน Error เรื่อง Certificate
+    tls: {
+        rejectUnauthorized: false 
     }
 });
 
@@ -191,7 +195,7 @@ app.put('/api/requests/:id/status', (req, res) => {
 
                     // ส่งอีเมล
                     transporter.sendMail({
-                        from: 'ระบบแจ้งซ่อม <no-reply@up.ac.th>',
+                        from: 'ระบบแจ้งซ่อม <kimujisann@gmail.com>',
                         to: userEmail,
                         subject: '✅ งานซ่อมที่คุณแจ้งเข้ามาเสร็จสิ้นแล้ว (กรุณารีวิว)',
                         html: `
@@ -268,6 +272,23 @@ app.post('/api/resend-verification', (req, res) => {
              if (error) return res.json({ status: 'error' });
              res.json({ status: 'ok', message: 'ส่งอีเมลใหม่แล้ว!' });
         });
+    });
+});
+
+// 👇 เพิ่มไว้ท้ายไฟล์ ก่อน app.listen
+app.get('/test-email', (req, res) => {
+    transporter.sendMail({
+        from: `Test <${process.env.EMAIL_USER}>`,
+        to: process.env.EMAIL_USER, // ส่งเข้าเมลตัวเองนี่แหละ
+        subject: 'ทดสอบการส่งเมลจาก Render',
+        text: 'ถ้าได้รับเมลนี้ แสดงว่าระบบส่งเมลใช้งานได้แล้ว! 🎉'
+    }, (err, info) => {
+        if (err) {
+            console.error("❌ ส่งไม่ผ่าน:", err);
+            return res.status(500).send(`<h1>ส่งไม่ผ่าน 😭</h1><pre>${err.message}</pre>`);
+        }
+        console.log("✅ ส่งสำเร็จ:", info);
+        res.send(`<h1>ส่งสำเร็จ! 🎉</h1><pre>${JSON.stringify(info, null, 2)}</pre>`);
     });
 });
 
