@@ -29,20 +29,13 @@ const upload = multer({ storage: storage });
 
 //ตั้งค่าอีเมล (Nodemailer)
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // ใช้ true สำหรับ port 465
+    host: 'smtp-relay.brevo.com',  // เปลี่ยนเป็นของ Brevo
+    port: 587,
+    secure: false,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    },
-    // 👇 เพิ่มก้อนนี้เข้าไปครับ สำคัญมากบน Cloud
-    tls: {
-        rejectUnauthorized: false,
-        ciphers: 'SSLv3'
-    },
-    // 👇 เพิ่ม Connection Timeout (ถ้าเกิน 10 วิ ให้ตัดเลยจะได้ไม่รอเก้อ)
-    connectionTimeout: 10000 
+        user: process.env.EMAIL_USER, // อีเมล Login ของ Brevo
+        pass: process.env.EMAIL_PASS  // รหัส SMTP Key ยาวๆ
+    }
 });
 
 transporter.verify((error, success) => {
