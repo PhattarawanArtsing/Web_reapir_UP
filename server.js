@@ -30,8 +30,8 @@ const upload = multer({ storage: storage });
 //ตั้งค่าอีเมล (Nodemailer)
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // ใช้ false สำหรับ port 587
+    port: 465,
+    secure: true, // ใช้ true สำหรับ port 465
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
