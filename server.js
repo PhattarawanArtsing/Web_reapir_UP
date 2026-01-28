@@ -40,6 +40,13 @@ const transporter = nodemailer.createTransport({
         rejectUnauthorized: false // ช่วยแก้ปัญหา Certificate บน Cloud บางเจ้า
     }
 });
+transporter.verify((error, success) => {
+    if (error) {
+        console.error("❌ เชื่อมต่อ Server อีเมลไม่สำเร็จ:", error);
+    } else {
+        console.log("✅ Server อีเมลพร้อมใช้งานแล้ว!");
+    }
+});
 
 //เชื่อมต่อ Database
 const db = mysql.createConnection({
@@ -75,7 +82,7 @@ app.post('/api/signup', (req, res) => {
             const verifyLink = `https://repair-up.onrender.com/verify?token=${token}`;
 
             const mailOptions = {
-                from: 'ระบบแจ้งซ่อม <no-reply@up.ac.th>',
+                from: 'ระบบแจ้งซ่อม <process.env.EMAIL_USER>',
                 to: email,
                 subject: '📧 ยืนยันการสมัครสมาชิก',
                 html: `
