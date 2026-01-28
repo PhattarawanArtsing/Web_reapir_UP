@@ -67,7 +67,7 @@ app.post('/api/signup', (req, res) => {
 
             // 4. ส่งอีเมล ตรงนี้ต้องแก้ URL ให้ตรงกับเครื่องคุณนะครับ
             //ผมใช้เป็น IP Address ของเครื่องผม เพื่อให้มือถือในวงแลนเดียวกันกดลิงก์ได้
-            const verifyLink = `http://192.168.1.180:3000/verify?token=${token}`;
+            const verifyLink = `https://repair-up.onrender.com/verify?token=${token}`;
 
             const mailOptions = {
                 from: 'ระบบแจ้งซ่อม <no-reply@up.ac.th>',
@@ -166,7 +166,7 @@ app.put('/api/requests/:id/status', (req, res) => {
                     
                     // แก้เลข IP ตรงนี้ให้เป็นของเครื่องตัวเองนะครับเพื่อให้กดจากมือถือได้ที่อยู่ในแลนวงเดียวกัน (ถ้าเทสแค่ในคอมก็ใช้ localhost ก็ได้)
                     // เช่น http://192.168.1.180:3000 หรือถ้าเทสแค่ในคอมใช้ http://localhost:3000 ก็ได้
-                    const webLink = `http://192.168.1.180:3000`; 
+                    const webLink = `https://repair-up.onrender.com`; // ใช้บน Server จริง
 
                     // ส่งอีเมล
                     transporter.sendMail({
@@ -224,7 +224,7 @@ app.get('/verify', (req, res) => {
             <div style="text-align:center; padding:50px; font-family:sans-serif;">
                 <h1 style="color:#2e7d32;">✅ ยืนยันสำเร็จ!</h1>
                 <p>บัญชีของคุณเปิดใช้งานแล้ว</p>
-                <a href="http://192.168.1.180:3000" style="background:#6a1b9a; color:white; padding:10px 20px; text-decoration:none; border-radius:5px;">เข้าสู่ระบบ</a>
+                <a href="https://repair-up.onrender.com" style="background:#6a1b9a; color:white; padding:10px 20px; text-decoration:none; border-radius:5px;">เข้าสู่ระบบ</a>
             </div>
         `);
     });
@@ -239,7 +239,7 @@ app.post('/api/resend-verification', (req, res) => {
         const user = results[0];
         if (user.is_verified === 1) return res.json({ status: 'error', message: 'ยืนยันไปแล้ว' });
 
-        const verifyLink = `http://192.168.1.180:3000/verify?token=${user.verification_token}`;
+        const verifyLink = `https://repair-up.onrender.com/verify?token=${user.verification_token}`;
         transporter.sendMail({
             from: 'ระบบแจ้งซ่อม', to: email, subject: 'ยืนยันอีเมล (ส่งซ้ำ)',
             html: `<a href="${verifyLink}">คลิกยืนยันอีเมล</a>`
