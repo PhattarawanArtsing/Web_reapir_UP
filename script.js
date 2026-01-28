@@ -1,5 +1,6 @@
 //แก้ IP ตรงนี้ให้ตรงกับเครื่องคุณ (ipconfig)
-const BASE_URL = 'http://192.168.1.180:3000'; 
+// const BASE_URL = 'http://192.168.1.180:3000'; 
+const BASE_URL = "repair-up.onrender.com"; // ใช้บน Server จริง
 
 // เช็คสถานะ Login เพื่อปรับ Navbar
 function checkLoginStatus() {
