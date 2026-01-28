@@ -31,8 +31,8 @@ const upload = multer({ storage: storage });
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'Ma7012015@gmail.com',
-        pass: 'baeu unfg dfbi dooc' 
+        user: process.env.EMAIL_USER, 
+        pass: process.env.EMAIL_PASS 
     }
 });
 
