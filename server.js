@@ -29,10 +29,15 @@ const upload = multer({ storage: storage });
 
 //ตั้งค่าอีเมล (Nodemailer)
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',  // ระบุ host ของ gmail ตรงๆ
+    port: 587,               // ใช้พอร์ต 587 (มาตรฐาน)
+    secure: false,           // false สำหรับพอร์ต 587
     auth: {
-        user: process.env.EMAIL_USER, 
-        pass: process.env.EMAIL_PASS 
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    },
+    tls: {
+        rejectUnauthorized: false // ช่วยแก้ปัญหา Certificate บน Cloud บางเจ้า
     }
 });
 
