@@ -83,7 +83,7 @@ app.post('/api/signup', (req, res) => {
             if (err) return res.json({ status: 'error', message: 'สมัครสมาชิกไม่สำเร็จ' });
 
             // 4. ส่งอีเมล
-            // ⚠️ จุดที่ต้องแก้: ถ้าเทสในเครื่องใช้ localhost, ถ้าขึ้น Server ใช้ URL ของ Render
+            // จุดที่ต้องแก้: ถ้าเทสในเครื่องใช้ localhost, ถ้าขึ้น Server ใช้ URL ของ Render
             // const BASE_URL = 'http://localhost:3000'; 
             const BASE_URL = 'https://repair-up.onrender.com'; // ใช้บน Server จริง
             const verifyLink = `${BASE_URL}/verify?token=${token}`;
@@ -250,6 +250,8 @@ app.get('/verify', (req, res) => {
             <div style="text-align:center; padding:50px; font-family:sans-serif;">
                 <h1 style="color:#2e7d32;">✅ ยืนยันสำเร็จ!</h1>
                 <p>บัญชีของคุณเปิดใช้งานแล้ว</p>
+                //แก้ให้เป็นลิ้งก์ http://localhost:3000/login เมื่อเทสในเครื่อง
+                //แก้ให้เป็นลิ้งก์ https://repair-up.onrender.com เมื่อขึ้น Server จริง
                 <a href="https://repair-up.onrender.com" style="background:#6a1b9a; color:white; padding:10px 20px; text-decoration:none; border-radius:5px;">เข้าสู่ระบบ</a>
             </div>
         `);
@@ -264,7 +266,7 @@ app.post('/api/resend-verification', (req, res) => {
 
         const user = results[0];
         if (user.is_verified === 1) return res.json({ status: 'error', message: 'ยืนยันไปแล้ว' });
-
+                            //ตรงนี้ต้องแก้ลิงก์ให้ถูกต้องเหมือนข้างบน http://localhost:3000/verify?token=
         const verifyLink = `https://repair-up.onrender.com/verify?token=${user.verification_token}`;
         transporter.sendMail({
             from: 'ระบบแจ้งซ่อม', to: email, subject: 'ยืนยันอีเมล (ส่งซ้ำ)',
