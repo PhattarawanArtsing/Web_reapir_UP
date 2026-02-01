@@ -113,17 +113,28 @@ app.post('/api/signup', (req, res) => {
         });
     });
 });
+app.post('/api/login', (req, res) => {
+    const { email, password } = req.body;
+    db.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
+        if (err || results.length === 0) return res.json({ status: 'error', message: 'อีเมลหรือรหัสผ่านไม่ถูกต้อง' });
+        const user = results[0];
+        // เช็ครหัสผ่านที่ส่งมา เทียบกับรหัสที่เข้ารหัสไว้ใน DB
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) return res.json({ status: 'error', message: 'อีเมลหรือรหัสผ่านไม่ถูกต้อง' });
+        if (user.is_verified === 0) {
+            return res.json({ status: 'error', message: 'กรุณายืนยันอีเมลก่อน', needs_verify: true });
+        }
+        res.json({ status: 'ok', user: user });
+    });
+});
 
 //เข้าสู่ระบบ (Login)
 app.post('/api/login', (req, res) => {
     const { email, password } = req.body;
-    
     db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
         if (err || results.length === 0) return res.json({ status: 'error', message: 'อีเมลหรือรหัสผ่านไม่ถูกต้อง' });
-
         const user = results[0];
         if (password !== user.password) return res.json({ status: 'error', message: 'อีเมลหรือรหัสผ่านไม่ถูกต้อง' });
-
         //เช็คยืนยันตัวตน
         if (user.is_verified === 0) {
             return res.json({ 
@@ -132,7 +143,6 @@ app.post('/api/login', (req, res) => {
                 needs_verify: true // ส่งรหัสบอกหน้าบ้านให้โชว์ปุ่ม Resend
             });
         }
-
         res.json({ status: 'ok', user: user });
     });
 });
@@ -278,7 +288,7 @@ app.post('/api/resend-verification', (req, res) => {
     });
 });
 
-// 👇 เพิ่มไว้ท้ายไฟล์ ก่อน app.listen
+// เพิ่มไว้ท้ายไฟล์ ก่อน app.listen
 // app.get('/test-email', (req, res) => {
 //     transporter.sendMail({
 //         from: `Test <${process.env.EMAIL_USER}>`,
