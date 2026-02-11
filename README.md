@@ -13,7 +13,10 @@
 -node server.js<br>
 login เพื่อใช้งานเว็บโดยใช้ email test<br>
 <h2>Email test</h2>
+role:admin <br>
 admin@up.ac.th<br>
-1234<br><br>
-
+password: 1234<br><br>
+role:user<br>
+67024942@up.ac.th<br>
+password: kit01<br>
 ดูเว็บได้ที่----> https://repair-up.onrender.com
