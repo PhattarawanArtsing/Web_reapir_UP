@@ -40,6 +40,9 @@ node server.js
 ```bash
 http://localhost:3000
 ```
+```bash
+https://repair-up.onrender.com
+```
 ทดลองเข้าใช้งาน
 ```bash
 role:admin 
