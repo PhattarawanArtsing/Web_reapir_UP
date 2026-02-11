@@ -1,7 +1,7 @@
 {
   "name": "repair-system",
   "version": "1.0.0",
-  "description": "",
+  "description": "<h1>HOW TO RUN</h1><br>\r 1.clone project นี้<br>\r 2.เปิดฐานข้อมูล แล้ว run sql file เลือก database2.sql<br>\r 3.เปิดterminal พิมพ์คำสั่ง<br>\r -npm install<br>\r -node server.js<br>\r login เพื่อใช้งานเว็บโดยใช้ email test<br>\r <h2>Email test</h2>\r test@up.ac.th<br>\r CPE1234<br><br>",
   "main": "script.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -14,12 +14,20 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
-    "dotenv": "^17.2.3",
+    "dotenv": "^17.2.4",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "multer": "^2.0.2",
     "mysql2": "^3.16.1",
     "nodemailer": "^7.0.12",
     "sib-api-v3-sdk": "^8.5.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kimuz57/Web_repair_UP.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kimuz57/Web_repair_UP/issues"
+  },
+  "homepage": "https://github.com/kimuz57/Web_repair_UP#readme"
 }
