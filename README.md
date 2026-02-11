@@ -12,15 +12,29 @@
 ---
 
 ##  Set UP Project
-1)install
+1)สร้างไฟล์ .env
+```bash
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=up_repair_system_v2
+DB_PORT=3306
+
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASSWORD=your_app_password
+
+SESSION_SECRET=your_secret_key
+
+```
+2)install
 ```bash
 npm install
 ```
-2)run website
+3)run website
 ```bash
 node server.js
 ```
-3)open web browser
+4)open web browser
 ```bash
 http://localhost:3000
 ```
