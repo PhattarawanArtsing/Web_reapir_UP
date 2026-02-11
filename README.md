@@ -10,7 +10,10 @@
 - นางสาวภัทรวรรณ อาจสิงห์ 67026269  
 
 ---
-
+เข้าดู website ได้ที่
+```bash
+https://repair-up.onrender.com
+```
 ##  Set UP Project
 1)สร้างไฟล์ .env 
 ```bash
@@ -32,16 +35,13 @@ EMAIL_user และ password ในเล่มรายงานค่ะ ไ�
 ```bash
 npm install
 ```
-3)run website
+3)run website 
 ```bash
 node server.js
 ```
 4)open web browser
 ```bash
 http://localhost:3000
-```
-```bash
-https://repair-up.onrender.com
 ```
 ทดลองเข้าใช้งาน
 ```bash
