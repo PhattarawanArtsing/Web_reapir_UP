@@ -14,15 +14,15 @@
 ##  Set UP Project
 
 ติดตั้ง dependencies สำหรับโปรเจกต์
-###1)install
+1)install
 ```bash
 npm install
 ```
-##2)run website
+2)run website
 ```bash
 node server.js
 ```
-##1)open web browser
+3)open web browser
 ```bash
 http://localhost:3000
 ```
