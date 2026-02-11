@@ -12,7 +12,7 @@
 ---
 
 ##  Set UP Project
-1)สร้างไฟล์ .env
+1)สร้างไฟล์ .env 
 ```bash
 DB_HOST=localhost
 DB_USER=root
@@ -25,6 +25,8 @@ EMAIL_PASSWORD=your_app_password
 
 SESSION_SECRET=your_secret_key
 
+หมายเหตุ: ถ้าไม่ได้ตั้งค่า EMAIL_USER / EMAIL_PASSWORD ระบบยังสามารถเปิดเว็บได้ แต่ฟังก์ชันส่งอีเมลจะไม่ทำงาน
+user และ password ในเล่มรายงานค่ะ
 ```
 2)install
 ```bash
