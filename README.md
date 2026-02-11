@@ -12,8 +12,6 @@
 ---
 
 ##  Set UP Project
-
-ติดตั้ง dependencies สำหรับโปรเจกต์
 1)install
 ```bash
 npm install
@@ -26,7 +24,7 @@ node server.js
 ```bash
 http://localhost:3000
 ```
-##ทดลองเข้าใช้งาน
+ทดลองเข้าใช้งาน
 ```bash
 role:admin 
 admin@up.ac.th
