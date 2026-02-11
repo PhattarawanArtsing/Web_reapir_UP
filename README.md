@@ -26,7 +26,7 @@ EMAIL_PASSWORD=your_app_password
 SESSION_SECRET=your_secret_key
 
 หมายเหตุ: ถ้าไม่ได้ตั้งค่า EMAIL_USER / EMAIL_PASSWORD ระบบยังสามารถเปิดเว็บได้ แต่ฟังก์ชันส่งอีเมลจะไม่ทำงาน
-user และ password ในเล่มรายงานค่ะ
+EMAIL_user และ password ในเล่มรายงานค่ะ ไม่สะดวกใส่ในนี้เพื่อความปลอดภัย
 ```
 2)install
 ```bash
